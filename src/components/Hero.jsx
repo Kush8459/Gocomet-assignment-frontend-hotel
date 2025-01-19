@@ -46,45 +46,47 @@ function Hero({ setSelectedHotelName }) {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 min-h-[450px] sm:px-6 lg:px-8">
-      <div className="mt-16 mb-8">
-        <h1 className="text-4xl py-6 font-bold text-black">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 min-h-[450px]">
+      <div className="text-center my-10">
+        <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3">
           Find the Perfect deal, always.
         </h1>
-        <p className="text-black">
+        <p className="hidden sm:block">
           Lorem ipsum dolor sit amet consectetur, adipisicing elit...
         </p>
       </div>
-      <div className="flex items-center justify-center gap-14 bg-white rounded-lg">
-        <div className="relative flex-1">
-          <input
-            type="text"
-            value={searchInput}
-            onChange={handleSearchInput}
-            placeholder="Type city, place, or hotel name"
-            className="w-[500px] border border-gray-300 pl-10 py-2 rounded-lg text-gray-700 focus:outline-none focus:border-blue-500"
-          />
+      <div className="bg-white rounded-lg p-4">
+        <div className="relative">
           <FontAwesomeIcon
             icon={faSearch}
             className="absolute left-3 top-1/2 transform -translate-y-1/2 text-blue-500"
           />
+          <input
+            type="text"
+            value={searchInput}
+            onChange={handleSearchInput}
+            placeholder="Type hotel name"
+            className="w-full pl-10 pr-20 py-2 border-2 rounded-lg text-gray-700 focus:outline-none focus:border-blue-500"
+          />
           <button
             onClick={resetSearch}
-            className="bg-blue-500 ml-5 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md"
+            className="absolute right-3 top-1/2 transform -translate-y-1/2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-3 rounded-md"
           >
             Reset Search
           </button>
-          <ul className="hiddden absolute z-10 left-0 right-0 mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-auto w-[500px]">
-            {suggestions.map((suggestion, index) => (
-              <li
-                key={index}
-                className="px-4 py-2 hover:bg-blue-100 cursor-pointer"
-                onClick={() => handleSelect(suggestion.name)}
-              >
-                {suggestion.name} ({suggestion.city})
-              </li>
-            ))}
-          </ul>
+          {suggestions.length > 0 && (
+            <ul className="absolute z-10 w-[365px] md:w-96 mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-auto">
+              {suggestions.map((suggestion, index) => (
+                <li
+                  key={index}
+                  className="px-4 py-2 hover:bg-blue-100 cursor-pointer"
+                  onClick={() => handleSelect(suggestion.name)}
+                >
+                  {suggestion.name} ({suggestion.city})
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
       </div>
     </div>

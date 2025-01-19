@@ -101,20 +101,20 @@ function ExploreHotels({ selectedHotelName }) {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-2 md:px-4 lg:px-6 py-10">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-6 py-10">
       <div>
         <h3 className="text-3xl font-medium text-center mb-4">
           Explore Hotels
         </h3>
       </div>
-      <div className="flex flex-wrap justify-between">
-        <div className="w-full md:w-1/5 p-4">
+      <div className="flex flex-col md:flex-row">
+        <div className="w-[290px] p-4">
           <Filters setFilters={setFilters} />
         </div>
-        <div className="w-full md:w-4/5">
+        <div className="w-full">
           <Sort setSortOption={setSortOption} />
           {hotelData.length > 0 ? (
-            <div className="flex flex-wrap justify-start items-stretch gap-3">
+            <div className="flex flex-wrap justify-center md:justify-start items-center gap-4">
               {hotelData.map((hotel) => (
                 <HotelCard key={hotel.id} hotel={hotel} />
               ))}

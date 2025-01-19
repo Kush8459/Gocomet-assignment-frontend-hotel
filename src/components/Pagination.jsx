@@ -11,10 +11,10 @@ function Pagination({ currentPage, setCurrentPage, totalPages }) {
       >
         Prev
       </button>
-      {Array.from({ length: 3 }, (_, i) => (
+      {Array.from({ length: 4 }, (_, i) => (
         <button
           key={i}
-          className={`px-3 py-2 bg-gray-400 border rounded-md ${currentPage === i + 1 ? "text-black bg-blue-200" : ""}`}
+          className={`px-3 py-2 bg-gray-400 border rounded-md ${currentPage === i + 1 ? "text-white border-2 border-black bg-blue-200" : ""}`}
           onClick={() => setCurrentPage(i + 1)}
         >
           {i + 1}

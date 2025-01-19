@@ -5,6 +5,11 @@ function Filters({ setFilters }) {
   const [selectedCities, setSelectedCities] = useState([]);
   const [selectedPrices, setSelectedPrices] = useState([]);
   const [selectedRatings, setSelectedRatings] = useState([]);
+  const [showFilters, setShowFilters] = useState(false);
+
+  const toggleFilters = () => {
+    setShowFilters(!showFilters);
+  };
 
   const cities = [
     "Mumbai",
@@ -60,58 +65,75 @@ function Filters({ setFilters }) {
   };
 
   return (
-    <div className="p-4 bg-white rounded shadow">
-      <h4 className="font-bold mb-2">Filters</h4>
-      <div className="mb-4">
-        <label className="block mb-1">City:</label>
-        {cities.map((city) => (
-          <div key={city}>
-            <input
-              type="checkbox"
-              id={city}
-              checked={selectedCities.includes(city)}
-              onChange={() => handleCitySelection(city)}
-            />
-            <label className="px-2" htmlFor={city}>{city}</label>
-          </div>
-        ))}
-      </div>
-      <div className="mb-4">
-        <label className="block mb-1">Price Range:</label>
-        {priceRanges.map((range) => (
-          <div key={range.value}>
-            <input
-              type="checkbox"
-              id={range.value}
-              checked={selectedPrices.includes(range.value)}
-              onChange={() => handlePriceSelection(range.value)}
-            />
-            <label className="px-2" htmlFor={range.value}>{range.label}</label>
-          </div>
-        ))}
-      </div>
-      <div>
-        <label className="block mb-1">Rating:</label>
-        {ratings.map((rating) => (
-          <div key={rating}>
-            <input
-              type="checkbox"
-              id={`rating-${rating}`}
-              checked={selectedRatings.includes(rating)}
-              onChange={() => handleRatingSelection(rating)}
-            />
-            <label className="px-2" htmlFor={`rating-${rating}`}>
-              {rating} Star{rating > 1 ? "s" : ""}
-            </label>
-          </div>
-        ))}
-      </div>
+    <div>
       <button
-        onClick={resetFilters}
-        className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-full"
+        onClick={toggleFilters}
+        className="sm:hidden bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-4"
       >
-        Reset Filters
+        {showFilters ? "Hide Filters" : "Show Filters"}
       </button>
+
+      <div
+        className={`p-4 bg-white rounded shadow w-full ${
+          showFilters ? "block" : "hidden sm:block"
+        }`}
+      >
+        <h4 className="font-bold mb-2">Filters</h4>
+        <div className="mb-4">
+          <label className="block mb-1">City:</label>
+          {cities.map((city) => (
+            <div key={city}>
+              <input
+                type="checkbox"
+                id={city}
+                checked={selectedCities.includes(city)}
+                onChange={() => handleCitySelection(city)}
+              />
+              <label className="ml-2" htmlFor={city}>
+                {city}
+              </label>
+            </div>
+          ))}
+        </div>
+        <div className="mb-4">
+          <label className="block mb-1">Price Range:</label>
+          {priceRanges.map((range) => (
+            <div key={range.value}>
+              <input
+                type="checkbox"
+                id={range.value}
+                checked={selectedPrices.includes(range.value)}
+                onChange={() => handlePriceSelection(range.value)}
+              />
+              <label className="ml-2" htmlFor={range.value}>
+                {range.label}
+              </label>
+            </div>
+          ))}
+        </div>
+        <div>
+          <label className="block mb-1">Rating:</label>
+          {ratings.map((rating) => (
+            <div key={rating}>
+              <input
+                type="checkbox"
+                id={`rating-${rating}`}
+                checked={selectedRatings.includes(rating)}
+                onChange={() => handleRatingSelection(rating)}
+              />
+              <label className="ml-2" htmlFor={`rating-${rating}`}>
+                {rating} Star{rating > 1 ? "s" : ""}
+              </label>
+            </div>
+          ))}
+        </div>
+        <button
+          onClick={resetFilters}
+          className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-full"
+        >
+          Reset Filters
+        </button>
+      </div>
     </div>
   );
 }
