@@ -62,7 +62,7 @@ function Navbar() {
             </Link>
             <Link
               to="/signin"
-              className="mt-4 sm:mt-0 sm:ml-4 bg-blue-300 hover:bg-blue-400 text-white font-bold py-2 px-4 rounded"
+              className="mt-4 sm:mt-0 sm:ml-4 bg-blue-400 hover:bg-blue-300 text-white font-bold py-2 px-4 rounded"
               onClick={() => setIsSidebarOpen(false)}
             >
               Sign In
