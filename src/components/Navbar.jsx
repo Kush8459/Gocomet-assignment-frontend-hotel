@@ -11,7 +11,7 @@ function Navbar() {
   return (
     <nav className="max-w-7xl mx-auto sm:px-6 lg:px-8">
       <div className="flex justify-between items-center h-16">
-        <div className="flex items-center">
+        <div className="flex items-center ml-4 md:ml-0">
           {/* Hamburger Menu for Mobile */}
           <button
             onClick={toggleSidebar}
