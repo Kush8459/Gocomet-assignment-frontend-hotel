@@ -1,8 +1,12 @@
 import { useEffect, useState } from "react";
+import PropTypes from "prop-types";
 import { useParams } from "react-router-dom";
-import FeedbackModal from "./FeedbackModal";
 
-function BookingComponent() {
+function BookingComponent({
+  setFeedbackMessage,
+  setShowFeedback,
+  setFeedbackType,
+}) {
   const { id, roomName } = useParams();
   const [roomDetails, setRoomDetails] = useState(null);
   const [hotelDetails, setHotelDetails] = useState(null);
@@ -12,10 +16,6 @@ function BookingComponent() {
   ]);
   const [checkIn, setCheckIn] = useState("");
   const [checkOut, setCheckOut] = useState("");
-  const [feedbackMessage, setFeedbackMessage] = useState("");
-
-  const [showFeedback, setShowFeedback] = useState(false);
-  const [feedbackType, setFeedbackType] = useState("success");
 
   useEffect(() => {
     const fetchHotelDetails = async () => {
@@ -204,17 +204,15 @@ function BookingComponent() {
           >
             Book Room
           </button>
-          {showFeedback && (
-            <FeedbackModal
-              message={feedbackMessage}
-              setShowFeedback={setShowFeedback}
-              type={feedbackType}
-            />
-          )}
         </div>
       </div>
     </div>
   );
 }
+BookingComponent.propTypes = {
+  setFeedbackMessage: PropTypes.func.isRequired,
+  setFeedbackType: PropTypes.func.isRequired,
+  setShowFeedback: PropTypes.func.isRequired,
+};
 
 export default BookingComponent;
