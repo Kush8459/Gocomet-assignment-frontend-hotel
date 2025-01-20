@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 import { IoPersonAdd } from "react-icons/io5";
+import FeedbackModal from "./FeedbackModal";
 
 function Hero({ setSelectedHotelName }) {
   const [searchInput, setSearchInput] = useState("");
@@ -15,6 +16,11 @@ function Hero({ setSelectedHotelName }) {
   const [typedText, setTypedText] = useState(" ");
   const [isDeleting, setIsDeleting] = useState(false);
   const [currentHeadingIndex, setCurrentHeadingIndex] = useState(0);
+
+  const [showFeedback, setShowFeedback] = useState(false);
+  const [feedbackMessage, setFeedbackMessage] = useState("");
+  const [feedbackType, setFeedbackType] = useState("success");
+
   const navigate = useNavigate();
 
   const headings = useMemo(
@@ -98,7 +104,9 @@ function Hero({ setSelectedHotelName }) {
 
   const handleSearch = async () => {
     if (!checkIn || !checkOut || !persons) {
-      alert("Please fill in all fields.");
+      setFeedbackMessage("Please fill in all fields correctly.");
+      setFeedbackType("error");
+      setShowFeedback(true);
       return;
     }
     const selectedHotel = hotels.find(
@@ -138,43 +146,107 @@ function Hero({ setSelectedHotelName }) {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 min-h-[450px]">
-      <div className="flex flex-col justify-center md:items-start items-center text-center my-14">
-        <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-8">
-          {typedText}
-        </h1>
-        <p className="w-full md:w-[80%] text-sm md:text-lg text-center md:text-start">
-          Discover the perfect stay for every occasion—whether you are planning
-          a romantic getaway, a family vacation, or a solo adventure, explore
-          hotels that offer unparalleled comfort, exceptional amenities, and
-          exclusive deals to make your journey unforgettable.
-        </p>
-      </div>
-      <div className="bg-white rounded-lg p-4 md:h-80 h-[600px]">
-        <div className="flex justify-center items-center md:justify-start gap-5 md:gap-0 flex-col md:flex-row">
-          <div className="relative">
-            <FontAwesomeIcon
-              icon={faSearch}
-              className="absolute left-3 top-3.5 text-blue-500"
-            />
-            <input
-              type="text"
-              value={searchInput}
-              onChange={handleSearchInput}
-              placeholder="Type hotel name"
-              className="w-80 pl-10 pr-20 py-2 border-2 rounded-lg text-gray-700 focus:outline-none focus:border-blue-500"
-            />
+    <>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 min-h-[450px]">
+        <div className="flex flex-col justify-center md:items-start items-center text-center my-14">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-8">
+            {typedText}
+          </h1>
+          <p className="w-full md:w-[80%] text-sm md:text-lg text-center md:text-start">
+            Discover the perfect stay for every occasion—whether you are
+            planning a romantic getaway, a family vacation, or a solo adventure,
+            explore hotels that offer unparalleled comfort, exceptional
+            amenities, and exclusive deals to make your journey unforgettable.
+          </p>
+        </div>
+
+        <div className="bg-white rounded-lg md:h-80 h-[600px]">
+          <div className="flex justify-center items-center md:justify-start gap-5 md:gap-0 flex-col md:flex-row">
+            <div className="relative">
+              <FontAwesomeIcon
+                icon={faSearch}
+                className="absolute left-3 top-3.5 text-blue-500"
+              />
+              <input
+                type="text"
+                value={searchInput}
+                onChange={handleSearchInput}
+                placeholder="Type hotel name"
+                className="md:w-60 w-80 pl-10 pr-20 py-2 border-2 rounded-lg text-gray-700 focus:outline-none focus:border-blue-500"
+              />
+              <button
+                onClick={resetSearch}
+                className="absolute right-14 md:right-2 top-2.5 bg-blue-500 hover:bg-blue-700 text-white font-bold px-2 rounded-md"
+              >
+                Reset
+              </button>
+            </div>
+            <div className="relative block md:hidden z-10 md:mb-0 mb-5">
+              <div>
+                {suggestions.length > 0 && (
+                  <ul className="w-80 mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-auto">
+                    {suggestions.map((suggestion, index) => (
+                      <li
+                        key={index}
+                        className="px-4 py-2 hover:bg-blue-100 cursor-pointer"
+                        onClick={() => handleSuggestion(suggestion)}
+                      >
+                        {suggestion}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+              <div></div>
+            </div>
+
+            <div className="md:ml-5 flex justify-between w-80 md:w-[230px] md:justify-start items-center gap-2">
+              <label className="font-bold" htmlFor="">
+                Check In :{" "}
+              </label>
+              <input
+                type="date"
+                placeholder="Check-in"
+                value={checkIn}
+                onChange={(e) => setCheckIn(e.target.value)}
+                className="form-input p-1 ml-3 md:ml-0 border-2 border-black rounded"
+              />
+            </div>
+            <div className="md:ml-5 flex justify-between w-80 md:w-[245px] md:justify-start items-center gap-2">
+              <label className="font-bold" htmlFor="">
+                Check Out :{" "}
+              </label>
+              <input
+                type="date"
+                placeholder="Check-out"
+                value={checkOut}
+                onChange={(e) => setCheckOut(e.target.value)}
+                className="form-input p-1 rounded border-2 border-black"
+              />
+            </div>
+            <div className="flex justify-start w-80 md:w-[130px] items-center md:ml-5">
+              <IoPersonAdd className="md:my-auto" />
+              <input
+                type="number"
+                placeholder="Number of persons"
+                value={persons}
+                min={1}
+                onChange={(e) => setPersons(e.target.value)}
+                className="w-20 form-input p-1 ml-3 md:ml-2 border-2 border-black rounded m-1"
+              />
+            </div>
+
             <button
-              onClick={resetSearch}
-              className="absolute right-14 md:right-2 top-2.5 bg-blue-500 hover:bg-blue-700 text-white font-bold px-2 rounded-md"
+              onClick={handleSearch}
+              className="right-3 top-1/2 bg-blue-500 hover:bg-blue-700 text-white font-bold md:ml-8 py-2 px-3 w-80 md:w-40 rounded-md"
             >
-              Reset
+              Search
             </button>
           </div>
-          <div className="relative block md:hidden z-10 md:mb-0 mb-5">
+          <div className="hidden md:block z-10">
             <div>
               {suggestions.length > 0 && (
-                <ul className="w-80 mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-auto">
+                <ul className="w-60 mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-auto">
                   {suggestions.map((suggestion, index) => (
                     <li
                       key={index}
@@ -189,70 +261,16 @@ function Hero({ setSelectedHotelName }) {
             </div>
             <div></div>
           </div>
-
-          <div className="md:ml-10 flex justify-start items-center ">
-            <label className="font-bold" htmlFor="">
-              Check In :{" "}
-            </label>
-            <input
-              type="date"
-              placeholder="Check-in"
-              value={checkIn}
-              onChange={(e) => setCheckIn(e.target.value)}
-              className="form-input p-1 ml-8 md:ml-3 border-2 border-black rounded"
-            />
-          </div>
-          <div className="md:ml-10 flex justify-start items-center">
-            <label className="font-bold" htmlFor="">
-              Check Out :{" "}
-            </label>
-            <input
-              type="date"
-              placeholder="Check-out"
-              value={checkOut}
-              onChange={(e) => setCheckOut(e.target.value)}
-              className="form-input p-1 ml-5 rounded border-2 border-black"
-            />
-          </div>
-          <div className="flex justify-start items-center">
-            <IoPersonAdd className="md:my-auto md:ml-8" />
-            <input
-              type="number"
-              placeholder="Number of persons"
-              value={persons}
-              min={1}
-              onChange={(e) => setPersons(e.target.value)}
-              className="w-20 form-input p-1 ml-3 md:ml-2 border-2 border-black rounded m-1"
-            />
-          </div>
-
-          <button
-            onClick={handleSearch}
-            className="right-3 top-1/2 bg-blue-500 hover:bg-blue-700 text-white font-bold md:ml-10 py-2 px-3 rounded-md"
-          >
-            Search
-          </button>
-        </div>
-        <div className="relative hidden md:block z-10">
-          <div>
-            {suggestions.length > 0 && (
-              <ul className="w-80 mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-auto">
-                {suggestions.map((suggestion, index) => (
-                  <li
-                    key={index}
-                    className="px-4 py-2 hover:bg-blue-100 cursor-pointer"
-                    onClick={() => handleSuggestion(suggestion)}
-                  >
-                    {suggestion}
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
-          <div></div>
         </div>
       </div>
-    </div>
+      {showFeedback && (
+        <FeedbackModal
+          message={feedbackMessage}
+          setShowFeedback={setShowFeedback}
+          type={feedbackType}
+        />
+      )}
+    </>
   );
 }
 Hero.propTypes = {
