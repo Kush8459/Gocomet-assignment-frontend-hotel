@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 import { IoPersonAdd } from "react-icons/io5";
+import herobg from "../assets/herobg.jpg";
 
 function Hero({
   setSelectedHotelName,
@@ -153,7 +154,7 @@ function Hero({
         <div
           className="h-[100%]"
           style={{
-            backgroundImage: "url('src/assets/herobg.jpg')",
+            backgroundImage: `url(${herobg})`,
             position: "absolute",
             zIndex: "-1",
             top: "0",
