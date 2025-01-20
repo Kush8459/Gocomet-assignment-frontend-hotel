@@ -21,6 +21,7 @@ function Hero({
   const [typedText, setTypedText] = useState(" ");
   const [isDeleting, setIsDeleting] = useState(false);
   const [currentHeadingIndex, setCurrentHeadingIndex] = useState(0);
+  const [showHotels, setShowHotels] = useState(false);
 
   const navigate = useNavigate();
 
@@ -28,7 +29,7 @@ function Hero({
     () => [
       "Find the Perfect Deal.....",
       "Find the Perfect Hotel.....",
-      "Find the Comfort, Wherever You Go.....",
+      "Find the Perfect Comfort.....",
     ],
     []
   );
@@ -148,44 +149,125 @@ function Hero({
 
   return (
     <>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 min-h-[450px]">
-        <div className="flex flex-col justify-center md:items-start items-center text-center my-14">
-          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-8">
-            {typedText}
-          </h1>
-          <p className="w-full md:w-[80%] text-sm md:text-lg text-center md:text-start">
-            Discover the perfect stay for every occasion—whether you are
-            planning a romantic getaway, a family vacation, or a solo adventure,
-            explore hotels that offer unparalleled comfort, exceptional
-            amenities, and exclusive deals to make your journey unforgettable.
-          </p>
-        </div>
+      <div className="relative z-1 mx-auto px-4 sm:px-6 lg:px-8 min-h-[450px] pt-20 ">
+        <div
+          className="h-[100%]"
+          style={{
+            backgroundImage: "url('src/assets/herobg.jpg')",
+            position: "absolute",
+            zIndex: "-1",
+            top: "0",
+            bottom: "0",
+            left: "0",
+            right: "0",
+            opacity: "0.15",
+            width: "100%",
+            filter: "grayscale(100)",
+          }}
+        ></div>
+        <div className="max-w-7xl px-4 sm:px-6 lg:px-8  mx-auto">
+          <div className="flex flex-col justify-center md:items-start items-center text-center mb-10">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-8">
+              {typedText}
+            </h1>
+            <p className="w-full md:w-[80%] text-sm md:text-lg text-center md:text-start">
+              Discover the perfect stay for every occasion—whether you are
+              planning a romantic getaway, a family vacation, or a solo
+              adventure, explore hotels that offer unparalleled comfort,
+              exceptional amenities, and exclusive deals to make your journey
+              unforgettable.
+            </p>
+          </div>
 
-        <div className="bg-white rounded-lg md:h-80 h-[600px]">
-          <div className="flex justify-center items-center md:justify-start gap-5 md:gap-0 flex-col md:flex-row">
-            <div className="relative">
-              <FontAwesomeIcon
-                icon={faSearch}
-                className="absolute left-3 top-3.5 text-blue-500"
-              />
-              <input
-                type="text"
-                value={searchInput}
-                onChange={handleSearchInput}
-                placeholder="Type hotel name"
-                className="md:w-60 w-80 pl-10 pr-20 py-2 border-2 rounded-lg text-gray-700 focus:outline-none focus:border-blue-500"
-              />
+          <div className="rounded-lg md:h-80 h-[430px]">
+            <div className="relative flex justify-center items-center md:justify-start gap-5 md:gap-0 flex-col md:flex-row">
+              <div className="absolute top-1 md:top-0">
+                <FontAwesomeIcon
+                  icon={faSearch}
+                  className="absolute left-3 top-3.5 text-blue-500"
+                />
+                <input
+                  type="text"
+                  value={searchInput}
+                  onClick={() => setShowHotels(!showHotels)}
+                  onChange={handleSearchInput}
+                  placeholder="Type hotel name"
+                  className="md:w-72 w-80 pl-10 pr-20 py-2 border-2 rounded-lg text-gray-700 focus:outline-none focus:border-blue-500"
+                />
+                <button
+                  onClick={resetSearch}
+                  className="absolute right-2  top-2.5 bg-blue-500 hover:bg-blue-700 text-white font-bold px-2 rounded-md"
+                >
+                  Reset
+                </button>
+              </div>
+              <div className="absolute top-[50px] block md:hidden z-10 md:mb-0 mb-5">
+                <div>
+                  {showFeedback === false &&
+                    showHotels &&
+                    suggestions.length > 0 && (
+                      <ul className=" w-80 mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-auto">
+                        {suggestions.map((suggestion, index) => (
+                          <li
+                            key={index}
+                            className="px-4 py-2 hover:bg-blue-100 cursor-pointer"
+                            onClick={() => handleSuggestion(suggestion)}
+                          >
+                            {suggestion}
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                </div>
+              </div>
+
+              <div className="absolute md:relative md:left-[300px] top-[100px] md:top-0 md:ml-5 flex justify-between w-80 md:w-[230px] md:justify-start items-center gap-2">
+                <label className="font-bold" htmlFor="">
+                  Check In :{" "}
+                </label>
+                <input
+                  type="date"
+                  placeholder="Check-in"
+                  value={checkIn}
+                  onChange={(e) => setCheckIn(e.target.value)}
+                  className="form-input p-1 ml-3 md:ml-0 border-2 border-black rounded"
+                />
+              </div>
+              <div className="absolute md:relative md:left-[300px] top-40 md:top-0 md:ml-5 flex justify-between w-80 md:w-[245px] md:justify-start items-center gap-2">
+                <label className="font-bold" htmlFor="">
+                  Check Out :{" "}
+                </label>
+                <input
+                  type="date"
+                  placeholder="Check-out"
+                  value={checkOut}
+                  onChange={(e) => setCheckOut(e.target.value)}
+                  className="form-input p-1 rounded border-2 border-black"
+                />
+              </div>
+              <div className="absolute md:relative md:left-[300px] top-56 md:top-0 flex justify-start w-80 md:w-[130px] items-center md:ml-5">
+                <IoPersonAdd className="md:my-auto" />
+                <input
+                  type="number"
+                  placeholder="Number of persons"
+                  value={persons}
+                  min={1}
+                  onChange={(e) => setPersons(e.target.value)}
+                  className="w-20 form-input p-1 ml-3 md:ml-2 border-2 border-black rounded m-1"
+                />
+              </div>
+
               <button
-                onClick={resetSearch}
-                className="absolute right-14 md:right-2 top-2.5 bg-blue-500 hover:bg-blue-700 text-white font-bold px-2 rounded-md"
+                onClick={handleSearch}
+                className="absolute md:relative md:top-1/2 top-[310px] md:left-[300px] md:right-3 bg-blue-500 hover:bg-blue-700 text-white font-bold md:ml-8 py-2 px-3 w-80 md:w-40 rounded-md"
               >
-                Reset
+                Search
               </button>
             </div>
-            <div className="block md:hidden z-10 md:mb-0 mb-5">
+            <div className="hidden md:block z-10">
               <div>
-                {showFeedback === false && suggestions.length > 0 && (
-                  <ul className=" w-80 mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-auto">
+                {suggestions.length > 0 && showHotels && (
+                  <ul className="w-72 mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-auto">
                     {suggestions.map((suggestion, index) => (
                       <li
                         key={index}
@@ -198,69 +280,7 @@ function Hero({
                   </ul>
                 )}
               </div>
-              <div></div>
             </div>
-
-            <div className="md:ml-5 flex justify-between w-80 md:w-[230px] md:justify-start items-center gap-2">
-              <label className="font-bold" htmlFor="">
-                Check In :{" "}
-              </label>
-              <input
-                type="date"
-                placeholder="Check-in"
-                value={checkIn}
-                onChange={(e) => setCheckIn(e.target.value)}
-                className="form-input p-1 ml-3 md:ml-0 border-2 border-black rounded"
-              />
-            </div>
-            <div className="md:ml-5 flex justify-between w-80 md:w-[245px] md:justify-start items-center gap-2">
-              <label className="font-bold" htmlFor="">
-                Check Out :{" "}
-              </label>
-              <input
-                type="date"
-                placeholder="Check-out"
-                value={checkOut}
-                onChange={(e) => setCheckOut(e.target.value)}
-                className="form-input p-1 rounded border-2 border-black"
-              />
-            </div>
-            <div className="flex justify-start w-80 md:w-[130px] items-center md:ml-5">
-              <IoPersonAdd className="md:my-auto" />
-              <input
-                type="number"
-                placeholder="Number of persons"
-                value={persons}
-                min={1}
-                onChange={(e) => setPersons(e.target.value)}
-                className="w-20 form-input p-1 ml-3 md:ml-2 border-2 border-black rounded m-1"
-              />
-            </div>
-
-            <button
-              onClick={handleSearch}
-              className="right-3 top-1/2 bg-blue-500 hover:bg-blue-700 text-white font-bold md:ml-8 py-2 px-3 w-80 md:w-40 rounded-md"
-            >
-              Search
-            </button>
-          </div>
-          <div className="hidden md:block z-10">
-            <div>
-              {suggestions.length > 0 && (
-                <ul className="w-60 mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-auto">
-                  {suggestions.map((suggestion, index) => (
-                    <li
-                      key={index}
-                      className="px-4 py-2 hover:bg-blue-100 cursor-pointer"
-                      onClick={() => handleSuggestion(suggestion)}
-                    >
-                      {suggestion}
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </div>
-            <div></div>
           </div>
         </div>
       </div>
