@@ -4,9 +4,14 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 import { IoPersonAdd } from "react-icons/io5";
-import FeedbackModal from "./FeedbackModal";
 
-function Hero({ setSelectedHotelName }) {
+function Hero({
+  setSelectedHotelName,
+  setFeedbackMessage,
+  setShowFeedback,
+  setFeedbackType,
+  showFeedback,
+}) {
   const [searchInput, setSearchInput] = useState("");
   const [suggestions, setSuggestions] = useState([]);
   const [hotels, setHotels] = useState([]);
@@ -16,10 +21,6 @@ function Hero({ setSelectedHotelName }) {
   const [typedText, setTypedText] = useState(" ");
   const [isDeleting, setIsDeleting] = useState(false);
   const [currentHeadingIndex, setCurrentHeadingIndex] = useState(0);
-
-  const [showFeedback, setShowFeedback] = useState(false);
-  const [feedbackMessage, setFeedbackMessage] = useState("");
-  const [feedbackType, setFeedbackType] = useState("success");
 
   const navigate = useNavigate();
 
@@ -181,10 +182,10 @@ function Hero({ setSelectedHotelName }) {
                 Reset
               </button>
             </div>
-            <div className="relative block md:hidden z-10 md:mb-0 mb-5">
+            <div className="block md:hidden z-10 md:mb-0 mb-5">
               <div>
-                {suggestions.length > 0 && (
-                  <ul className="w-80 mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-auto">
+                {showFeedback === false && suggestions.length > 0 && (
+                  <ul className=" w-80 mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-auto">
                     {suggestions.map((suggestion, index) => (
                       <li
                         key={index}
@@ -263,18 +264,15 @@ function Hero({ setSelectedHotelName }) {
           </div>
         </div>
       </div>
-      {showFeedback && (
-        <FeedbackModal
-          message={feedbackMessage}
-          setShowFeedback={setShowFeedback}
-          type={feedbackType}
-        />
-      )}
     </>
   );
 }
 Hero.propTypes = {
   setSelectedHotelName: PropTypes.func.isRequired,
+  setFeedbackMessage: PropTypes.func.isRequired,
+  setFeedbackType: PropTypes.func.isRequired,
+  setShowFeedback: PropTypes.func.isRequired,
+  showFeedback: PropTypes.func.isRequired,
 };
 
 export default Hero;
